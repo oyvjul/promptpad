@@ -6,7 +6,11 @@ Set Height 500
 Set FontSize 16
 Set Padding 20
 
+Set TypingSpeed 100ms
+Type "ppd"
+Sleep 600ms
 Hide
+Ctrl+U
 Type "npm start"
 Enter
 Sleep 2s
