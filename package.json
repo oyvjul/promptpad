@@ -1,18 +1,25 @@
 {
   "name": "promptpad",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Minimal terminal text editor built with React Ink",
   "scripts": {
     "start": "tsx src/app.tsx",
+    "build": "tsc",
+    "prepublishOnly": "npm run build && cp README.md README.github.md && cp README.npm.md README.md",
+    "postpublish": "cp README.github.md README.md && rm README.github.md",
     "popup": "./scripts/popup.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bin": {
-    "ppd": "./bin/ppd.sh"
+    "ppd": "./bin/ppd.cjs"
   },
+  "files": [
+    "bin/",
+    "dist/"
+  ],
   "dependencies": {
     "ink": "^6.8.0",
     "ink-multiline-input": "^0.1.0",
