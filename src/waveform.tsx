@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from "react";
 const BLOCKS = "▁▂▃▄▅▆▇█";
 const BAR_COUNT = 8;
 
-function getColor(intensity: number): string {
-  if (intensity < 0.33) return "green";
-  if (intensity < 0.66) return "yellow";
-  return "magenta";
+function getBarColor(height: number): string {
+  if (height < 0.4) return "cyan";
+  if (height < 0.7) return "#00CED1";
+  return "#00FFFF";
 }
 
 export function Waveform({
@@ -37,14 +37,12 @@ export function Waveform({
     }
   }
 
-  const bars = heights.current
-    .map((h) => {
-      const idx = Math.round(Math.min(1, Math.max(0, h)) * 7);
-      return BLOCKS[idx];
-    })
-    .join("");
+  const barElements = heights.current.map((h, i) => {
+    const idx = Math.round(Math.min(1, Math.max(0, h)) * 7);
+    const char = BLOCKS[idx];
+    const color = isTyping ? getBarColor(h) : "gray";
+    return <Text key={i} color={color}>{char}</Text>;
+  });
 
-  const color = isTyping ? getColor(intensity) : "gray";
-
-  return <Text color={color}>{bars}</Text>;
+  return <Text>{barElements}</Text>;
 }
