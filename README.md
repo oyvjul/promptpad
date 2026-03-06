@@ -24,12 +24,30 @@ tab juggling, no friction, just seamless context switching.
 - Line and character count
 - Auto-copy to clipboard on exit
 
-## Getting Started
+## Installation
 
 ```bash
+git clone https://github.com/YOUR_USER/promptpad.git
+cd promptpad
 npm install
-npm start
+npm link
 ```
+
+This installs `ppd` as a global command. You can now launch Promptpad from anywhere:
+
+```bash
+ppd
+```
+
+- **Inside tmux**: opens as a tmux popup overlay
+- **Outside tmux**: starts a new tmux session with the editor
+
+When you exit (ESC or Ctrl+C), your text is copied to the clipboard automatically.
+
+### Requirements
+
+- Node.js
+- tmux
 
 ## Keybindings
 

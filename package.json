@@ -10,6 +10,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bin": {
+    "ppd": "./bin/ppd.sh"
+  },
   "dependencies": {
     "ink": "^6.8.0",
     "ink-multiline-input": "^0.1.0",
