@@ -1,5 +1,5 @@
 import { Box, Text, useInput } from "ink";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 interface TextInputProps {
   value: string;
@@ -50,6 +50,10 @@ function getLineLength(text: string, lineIndex: number): number {
   return nl === -1 ? text.length - start : nl - start;
 }
 
+function stripBracketPasteMarkers(input: string): string {
+  return input.replace(/\[20[01]~/g, "");
+}
+
 function findWordBoundaryLeft(text: string, fromIndex: number): number {
   if (fromIndex <= 0) return 0;
   let i = fromIndex - 1;
@@ -81,9 +85,36 @@ export function TextInput({
   const [cursorIndex, setCursorIndex] = useState(0);
   const [scrollOffset, setScrollOffset] = useState(0);
 
+  const valueRef = useRef(value);
+  const cursorRef = useRef(cursorIndex);
+
+  // Sync refs on each render so handlers always see fresh values
+  valueRef.current = value;
+  cursorRef.current = cursorIndex;
+
+  const updateValue = useCallback(
+    (newValue: string) => {
+      valueRef.current = newValue;
+      onChange(newValue);
+    },
+    [onChange],
+  );
+
+  const updateCursor = useCallback(
+    (newCursorIndex: number) => {
+      cursorRef.current = newCursorIndex;
+      setCursorIndex(newCursorIndex);
+    },
+    [],
+  );
+
   // Clamp cursor when value shrinks (e.g. external change)
   useEffect(() => {
-    setCursorIndex((prev) => Math.min(prev, value.length));
+    setCursorIndex((prev) => {
+      const clamped = Math.min(prev, value.length);
+      cursorRef.current = clamped;
+      return clamped;
+    });
   }, [value]);
 
   // Compute cursor line and keep it in viewport
@@ -99,83 +130,78 @@ export function TextInput({
 
   useInput(
     (input, key) => {
+      const val = valueRef.current;
+      const cursor = cursorRef.current;
+
       // Tab and Ctrl+C pass through
       if (key.tab) {
         const indent = "  ";
         const newValue =
-          value.slice(0, cursorIndex) + indent + value.slice(cursorIndex);
-        onChange(newValue);
-        setCursorIndex((i) => i + indent.length);
+          val.slice(0, cursor) + indent + val.slice(cursor);
+        updateValue(newValue);
+        updateCursor(cursor + indent.length);
         return;
       }
       if (key.ctrl && input === "c") return;
 
       // Navigation
       if (key.leftArrow && !key.ctrl && !key.meta) {
-        setCursorIndex((i) => Math.max(0, i - 1));
+        updateCursor(Math.max(0, cursor - 1));
         return;
       }
       if (key.rightArrow && !key.ctrl && !key.meta) {
-        setCursorIndex((i) => Math.min(value.length, i + 1));
+        updateCursor(Math.min(val.length, cursor + 1));
         return;
       }
       if (key.leftArrow && (key.ctrl || key.meta)) {
-        setCursorIndex((i) => findWordBoundaryLeft(value, i));
+        updateCursor(findWordBoundaryLeft(val, cursor));
         return;
       }
       if (key.rightArrow && (key.ctrl || key.meta)) {
-        setCursorIndex((i) => findWordBoundaryRight(value, i));
+        updateCursor(findWordBoundaryRight(val, cursor));
         return;
       }
 
       if (key.upArrow) {
-        setCursorIndex((i) => {
-          const { line, col } = getCursorLineAndColumn(value, i);
-          if (line === 0) return i;
-          const prevLineLen = getLineLength(value, line - 1);
-          const prevLineStart = getLineStartOffset(value, line - 1);
-          return prevLineStart + Math.min(col, prevLineLen);
-        });
+        const { line, col } = getCursorLineAndColumn(val, cursor);
+        if (line === 0) return;
+        const prevLineLen = getLineLength(val, line - 1);
+        const prevLineStart = getLineStartOffset(val, line - 1);
+        updateCursor(prevLineStart + Math.min(col, prevLineLen));
         return;
       }
       if (key.downArrow) {
-        setCursorIndex((i) => {
-          const { line, col } = getCursorLineAndColumn(value, i);
-          const lines = value.split("\n");
-          if (line >= lines.length - 1) return i;
-          const nextLineStart = getLineStartOffset(value, line + 1);
-          const nextLineLen = getLineLength(value, line + 1);
-          return nextLineStart + Math.min(col, nextLineLen);
-        });
+        const { line, col } = getCursorLineAndColumn(val, cursor);
+        const lines = val.split("\n");
+        if (line >= lines.length - 1) return;
+        const nextLineStart = getLineStartOffset(val, line + 1);
+        const nextLineLen = getLineLength(val, line + 1);
+        updateCursor(nextLineStart + Math.min(col, nextLineLen));
         return;
       }
 
       // Home / Ctrl+A
       if (key.home || (key.ctrl && input === "a")) {
-        setCursorIndex((i) => {
-          const { line } = getCursorLineAndColumn(value, i);
-          return getLineStartOffset(value, line);
-        });
+        const { line } = getCursorLineAndColumn(val, cursor);
+        updateCursor(getLineStartOffset(val, line));
         return;
       }
       // End / Ctrl+E
       if (key.end || (key.ctrl && input === "e")) {
-        setCursorIndex((i) => {
-          const { line } = getCursorLineAndColumn(value, i);
-          const start = getLineStartOffset(value, line);
-          const len = getLineLength(value, line);
-          return start + len;
-        });
+        const { line } = getCursorLineAndColumn(val, cursor);
+        const start = getLineStartOffset(val, line);
+        const len = getLineLength(val, line);
+        updateCursor(start + len);
         return;
       }
 
       // Backspace (ink maps physical Backspace to key.delete on Linux/WSL)
       if (key.backspace || key.delete) {
-        if (cursorIndex > 0) {
+        if (cursor > 0) {
           const newValue =
-            value.slice(0, cursorIndex - 1) + value.slice(cursorIndex);
-          onChange(newValue);
-          setCursorIndex((i) => i - 1);
+            val.slice(0, cursor - 1) + val.slice(cursor);
+          updateValue(newValue);
+          updateCursor(cursor - 1);
         }
         return;
       }
@@ -183,9 +209,9 @@ export function TextInput({
       // Enter
       if (key.return) {
         const newValue =
-          value.slice(0, cursorIndex) + "\n" + value.slice(cursorIndex);
-        onChange(newValue);
-        setCursorIndex((i) => i + 1);
+          val.slice(0, cursor) + "\n" + val.slice(cursor);
+        updateValue(newValue);
+        updateCursor(cursor + 1);
         return;
       }
 
@@ -194,11 +220,13 @@ export function TextInput({
 
       // Printable input (including paste)
       if (input && !key.ctrl && !key.meta) {
-        const normalized = expandTabs(normalizeLineEndings(input));
+        const cleaned = stripBracketPasteMarkers(input);
+        if (!cleaned) return;
+        const normalized = expandTabs(normalizeLineEndings(cleaned));
         const newValue =
-          value.slice(0, cursorIndex) + normalized + value.slice(cursorIndex);
-        onChange(newValue);
-        setCursorIndex((i) => i + normalized.length);
+          val.slice(0, cursor) + normalized + val.slice(cursor);
+        updateValue(newValue);
+        updateCursor(cursor + normalized.length);
       }
     },
     { isActive },

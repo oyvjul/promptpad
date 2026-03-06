@@ -4,7 +4,8 @@
   "type": "module",
   "description": "Minimal terminal text editor built with React Ink",
   "scripts": {
-    "start": "tsx src/app.tsx"
+    "start": "tsx src/app.tsx",
+    "popup": "./scripts/popup.sh"
   },
   "keywords": [],
   "author": "",

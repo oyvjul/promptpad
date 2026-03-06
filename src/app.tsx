@@ -1,4 +1,4 @@
-import { render, Box, Text, useApp, useInput } from "ink";
+import { render, Box, Text, useApp, useInput, useStdout } from "ink";
 import { MultilineInput } from "ink-multiline-input";
 import { TextInput } from "./text-input.js";
 import { useMemo, useState } from "react";
@@ -11,6 +11,7 @@ const USE_CUSTOM_INPUT = true;
 
 function Editor() {
   const { exit } = useApp();
+  const { stdout } = useStdout();
   const [value, setValue] = useState("");
 
   useInput((input, key) => {
@@ -36,21 +37,8 @@ function Editor() {
   const tokenCount = useMemo(() => enc.encode(value).length, [value]);
 
   return (
-    <Box flexDirection="column" padding={1}>
-      <Box justifyContent="space-between" marginBottom={1}>
-        <Text bold color="cyan">
-          Claude Text Editor
-        </Text>
-        <Text dimColor>ESC to exit | Ctrl+C to quit</Text>
-      </Box>
-
-      <Box
-        borderStyle="round"
-        borderColor="gray"
-        flexDirection="column"
-        minHeight={10}
-        flexGrow={1}
-      >
+    <Box flexDirection="column" height={stdout.rows}>
+      <Box flexDirection="column" minHeight={10} height="80%" flexGrow={1}>
         {USE_CUSTOM_INPUT ? (
           <TextInput value={value} onChange={setValue} rows={20} />
         ) : (
@@ -58,10 +46,11 @@ function Editor() {
         )}
       </Box>
 
-      <Box justifyContent="space-between" marginTop={1}>
+      <Box justifyContent="space-between">
         <Text dimColor>
           Lines: {lineCount} | Chars: {charCount} | Tokens: {tokenCount}
         </Text>
+        <Text dimColor>ESC to exit | Ctrl+C to quit</Text>
       </Box>
     </Box>
   );
