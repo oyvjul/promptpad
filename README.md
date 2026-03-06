@@ -1,6 +1,17 @@
 # Promptpad
 
-A minimal terminal text editor built with [React Ink](https://github.com/vadimdemedes/ink).
+Every AI terminal gives you the same thing: a small, cramped text box that makes writing
+multi-line prompts a nightmare. You're writing complex instructions, detailed context,
+multi-step plans, and you're doing it in an input field built for search queries.
+
+Try Promptpad.
+
+An extremely lightweight, full-screen terminal text editor designed for crafting AI
+prompts. No bloat, no setup, it pops up instantly, lets you write freely, and saves
+straight to your clipboard when you're done. Switch back to your AI tool and paste. No
+tab juggling, no friction, just seamless context switching.
+
+![Demo](.demo/demo.gif)
 
 ## Features
 
@@ -35,6 +46,4 @@ npm start
 
 ## Tech Stack
 
-- [React](https://react.dev/) + [Ink](https://github.com/vadimdemedes/ink) for terminal UI
-- [tiktoken](https://github.com/openai/tiktoken) for token counting
-- [TypeScript](https://www.typescriptlang.org/) with [tsx](https://github.com/privatenumber/tsx) for execution
+A minimal terminal text editor built with [React Ink](https://github.com/vadimdemedes/ink).
