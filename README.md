@@ -8,6 +8,7 @@ A minimal terminal text editor built with [React Ink](https://github.com/vadimde
 - Cursor navigation (arrows, Home/End, word jumping with Ctrl/Meta)
 - Tab indentation
 - Scrolling viewport
+- Full-height terminal layout with status bar pinned to the bottom
 - Live token count (using tiktoken, GPT-4 tokenizer)
 - Line and character count
 - Auto-copy to clipboard on exit
