@@ -27,8 +27,6 @@ tab juggling, no friction, just seamless context switching.
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USER/promptpad.git
-cd promptpad
 npm install
 npm link
 ```
