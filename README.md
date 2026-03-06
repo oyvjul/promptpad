@@ -42,6 +42,8 @@ ppd
 
 When you exit (ESC or Ctrl+C), your text is copied to the clipboard automatically.
 
+> **Note:** If using Promptpad with Claude Code, make sure to start tmux before launching Claude Code so that `ppd` can open as a popup overlay.
+
 ### Requirements
 
 - Node.js
