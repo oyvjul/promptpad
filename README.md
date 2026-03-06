@@ -49,6 +49,38 @@ When you exit (ESC or Ctrl+C), your text is copied to the clipboard automaticall
 - Node.js
 - tmux
 
+### Installing tmux
+
+Promptpad requires tmux to run. If you don't have it installed, follow the instructions for your platform:
+
+**macOS** (Homebrew):
+
+```bash
+brew install tmux
+```
+
+**Ubuntu/Debian**:
+
+```bash
+sudo apt install tmux
+```
+
+**Fedora**:
+
+```bash
+sudo dnf install tmux
+```
+
+**Arch Linux**:
+
+```bash
+sudo pacman -S tmux
+```
+
+**Windows** (WSL):
+
+Install via your WSL distribution's package manager (e.g. `apt install tmux`).
+
 ## Keybindings
 
 | Key                    | Action                          |
