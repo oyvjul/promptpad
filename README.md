@@ -1,4 +1,4 @@
-# Claude Text Editor
+# Promptpad
 
 A minimal terminal text editor built with [React Ink](https://github.com/vadimdemedes/ink).
 
@@ -21,16 +21,16 @@ npm start
 
 ## Keybindings
 
-| Key | Action |
-|---|---|
-| Arrow keys | Move cursor |
-| Ctrl/Meta + Left/Right | Jump by word |
-| Home / Ctrl+A | Go to start of line |
-| End / Ctrl+E | Go to end of line |
-| Tab | Insert 2-space indent |
-| Enter | New line |
-| Backspace | Delete character |
-| ESC / Ctrl+C | Copy text to clipboard and exit |
+| Key                    | Action                          |
+| ---------------------- | ------------------------------- |
+| Arrow keys             | Move cursor                     |
+| Ctrl/Meta + Left/Right | Jump by word                    |
+| Home / Ctrl+A          | Go to start of line             |
+| End / Ctrl+E           | Go to end of line               |
+| Tab                    | Insert 2-space indent           |
+| Enter                  | New line                        |
+| Backspace              | Delete character                |
+| ESC / Ctrl+C           | Copy text to clipboard and exit |
 
 ## Tech Stack
 
