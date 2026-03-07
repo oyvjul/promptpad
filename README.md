@@ -11,6 +11,8 @@ prompts. No bloat, no setup, it pops up instantly, lets you write freely, and sa
 straight to your clipboard when you're done. Switch back to your AI tool and paste. No
 tab juggling, no friction, just seamless context switching.
 
+![Demo](.demo/demo.gif)
+
 ## Features
 
 - Multiline text editing in the terminal
