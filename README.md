@@ -60,7 +60,24 @@ ppd
 
 When you exit (ESC or Ctrl+C), your text is copied to the clipboard automatically.
 
-> **Note:** If using Promptpad with Claude Code, make sure to start tmux before launching Claude Code so that `ppd` can open as a popup overlay.
+## Claude Code Usage
+
+1. **Start tmux** (required so `ppd` can open as a popup overlay):
+   ```bash
+   tmux
+   ```
+
+2. **Launch Claude Code** inside the tmux session:
+   ```bash
+   claude
+   ```
+
+3. **Open Promptpad** by typing the following in Claude Code:
+   ```
+   !ppd
+   ```
+
+This opens a full-screen editor overlay where you can comfortably write your prompt. When you exit (ESC or Ctrl+C), the text is copied to your clipboard — just paste it into Claude Code.
 
 ## Keybindings
 
@@ -77,4 +94,4 @@ When you exit (ESC or Ctrl+C), your text is copied to the clipboard automaticall
 
 ## Links
 
-- [GitHub](https://github.com/basse/promptpad)
+- [GitHub](https://github.com/oyvjul/promptpad)
