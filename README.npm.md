@@ -77,4 +77,4 @@ When you exit (ESC or Ctrl+C), your text is copied to the clipboard automaticall
 
 ## Links
 
-- [GitHub](https://github.com/basse/promptpad)
+- [GitHub](https://github.com/oyvjul/promptpad)
