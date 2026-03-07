@@ -1,6 +1,6 @@
 {
   "name": "promptpad",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "type": "module",
   "description": "Minimal terminal text editor built with React Ink",
   "scripts": {
@@ -13,6 +13,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oyvjul/promptpad.git"
+  },
   "bin": {
     "ppd": "bin/ppd.cjs"
   },
