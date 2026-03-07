@@ -20,8 +20,7 @@ tab juggling, no friction, just seamless context switching.
 - Tab indentation
 - Scrolling viewport
 - Full-height terminal layout with status bar pinned to the bottom
-- Live token count (using tiktoken, GPT-4 tokenizer)
-- Line and character count
+- Live token count (Still in beta)
 - Auto-copy to clipboard on exit
 
 ## Installation
@@ -65,11 +64,13 @@ When you exit (ESC or Ctrl+C), your text is copied to the clipboard automaticall
 ## Claude Code Usage
 
 1. **Start tmux** (required so `ppd` can open as a popup overlay):
+
    ```bash
    tmux
    ```
 
 2. **Launch Claude Code** inside the tmux session:
+
    ```bash
    claude
    ```
